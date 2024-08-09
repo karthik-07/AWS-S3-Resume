@@ -1,3 +1,9 @@
+image:
+  name: hashicorp/terraform:light
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_STATE_NAME: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
