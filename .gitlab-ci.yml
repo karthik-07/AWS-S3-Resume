@@ -1,0 +1,39 @@
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}
+  TF_STATE_NAME: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - ${TF_ROOT}/.terraform
+
+before_script:
+    - cd ${TF_ROOT}
+    - terraform --version
+    - terraform init
+
+stages:
+  - validate
+  - plan
+  - apply
+
+validate:
+    stage: validate
+    script:
+        - terraform validate
+
+plan:
+    stage: plan
+    script:
+        - terraform plan -out=tfplan
+    artifacts:
+        paths:
+          - -tfplan
+
+apply:
+    stage: apply
+    script:
+        - terraform apply -auto-approve tfplan
+    when: manual
+    only: 
+        - main
