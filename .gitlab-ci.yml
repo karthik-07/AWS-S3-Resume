@@ -46,6 +46,13 @@ import:
         else
           echo "EC2 already exists"
         fi
+        fi
+      - |
+        if ! terraform show | grep -q "module.ec2.aws_key_pair.ec2_instance_public_key"; then
+          terraform import module.ec2.aws_key_pair.ec2_instance_public_key aws_ec2_terraform
+        else
+          echo "Key pair already exists"
+        fi
     allow_failure: true
 
 plan:
