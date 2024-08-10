@@ -1,17 +1,22 @@
-image:
-  name: resgistry.gitlab.com/gitlab-org/gitlab-build-images:terraform
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+image: ubuntu:latest
 
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_STATE_NAME: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  TERRAFORM_VERSION: "1.5.7"
 
 cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - ${TF_ROOT}/.terraform
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ${TF_ROOT}/.terraform
+
+before_script:
+  - apt-get update && apt-get install -y wget unzip
+  - wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+  - unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+  - mv terraform /usr/local/bin/
+  - terraform version
+  - cd ${TF_ROOT}
 
 stages:
   - validate
@@ -19,22 +24,26 @@ stages:
   - apply
 
 validate:
-    stage: validate
-    script:
-        - terraform validate
+  stage: validate
+  script:
+    - terraform init
+    - terraform validate
 
 plan:
-    stage: plan
-    script:
-        - terraform plan -out=tfplan -var-file=terraform.tfvars
-    artifacts:
-        paths:
-          - -tfplan
+  stage: plan
+  script:
+    - terraform init
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
+    expire_in: 1 week
 
 apply:
-    stage: apply
-    script:
-        - terraform apply -var-file=terraform.tfvars -auto-approve tfplan 
-    when: manual
-    only: 
-        - main
+  stage: apply
+  script:
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  when: manual
+  only:
+    - main
