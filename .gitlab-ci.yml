@@ -24,6 +24,7 @@ stages:
   - validate
   - plan
   - apply
+  - destroy
 
 validate:
     stage: validate
@@ -44,4 +45,12 @@ apply:
         - terraform apply -auto-approve tfplan 
     when: manual
     only: 
+        - main
+
+destroy:
+    stage: destroy
+    script:
+        - terraform destroy -auto-approve tfplan
+    when: manual
+    only:
         - main
