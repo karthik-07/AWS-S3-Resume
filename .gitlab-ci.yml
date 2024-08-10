@@ -17,14 +17,13 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
-  - rm -rf .terraform/providers
-  - terraform init -backend-config="key=terraform-state/${TF_STATE_NAME}" -upgrade
 
 stages:
   - validate
   - plan
   - apply
   - destroy
+
 
 validate:
     stage: validate
