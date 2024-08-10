@@ -20,18 +20,17 @@ before_script:
   - cd ${TF_ROOT}
 
 stages:
-  - backend-init
   - init
   - validate
   - plan
   - apply
   - destroy
 
-backend-init:
-    stage: backend-init
-    script:
-      - terraform init -backend-config=backend.tf
-    when: manual
+# backend-init:
+#     stage: backend-init
+#     script:
+#       - terraform init
+#     when: manual
 
 init:
     stage: init
