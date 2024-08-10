@@ -17,8 +17,6 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
-  - rm -rf .terraform
-  - rm -f .terraform.lock.hcl
 
 stages:
   - init
@@ -30,6 +28,8 @@ stages:
 init:
     stage: init
     script:
+        - rm -rf .terraform
+        - rm -f .terraform.lock.hcl
         - terraform init -reconfigure -upgrade
 
 validate:
