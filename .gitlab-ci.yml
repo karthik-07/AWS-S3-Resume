@@ -17,6 +17,8 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
+  - rm -rf .terraform/providers  # Remove cached providers
+  - terraform init -upgrade  # Reinitialize and upgrade providers
 
 stages:
   - validate
@@ -34,7 +36,7 @@ plan:
         - terraform plan -out=tfplan
     artifacts:
         paths:
-          - -tfplan
+          - tfplan
 
 apply:
     stage: apply
