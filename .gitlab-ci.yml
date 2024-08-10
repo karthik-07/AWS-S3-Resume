@@ -3,7 +3,7 @@ image: ubuntu:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_STATE_NAME: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
-  TERRAFORM_VERSION: "1.5.7"
+  TERRAFORM_VERSION: "1.9.3"
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
