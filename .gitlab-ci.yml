@@ -30,6 +30,23 @@ validate:
     script:
         - terraform validate
 
+import:
+    stage: import
+    script:
+      - |
+        if ! terraform show | grep -q "aws_s3_bucket.bucket_state_terraform"; then
+          terraform import aws_s3_bucket.bucket_state_terraform terraform-state-bucket-karthik
+        else
+          echo "S3 bucket exists"
+        fi
+      - |
+        if ! terraform show | grep -q "aws_instance.jenkins_ec2_instance"; then
+          terraform import aws_instance.jenkins_ec2_instance i-0516179026a961679
+        else
+          echo "EC2 already exists"
+        fi
+    allow_failure: true
+
 plan:
     stage: plan
     script:
