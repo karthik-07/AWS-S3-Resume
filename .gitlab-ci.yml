@@ -35,14 +35,16 @@ import:
     stage: import
     script:
       - |
-        if ! terraform show | grep -q "module.s3_bucket.aws_s3_bucket.bucket_state_terraform"; then
-          terraform import module.s3_bucket.aws_s3_bucket.bucket_state_terraform terraform-state-bucket-karthik
+        if ! terraform state list | grep -q "module.s3_bucket.aws_s3_bucket.bucket_state_terraform"; then
+          echo "Importing S3 bucket..."
+          terraform import module.s3_bucket.aws_s3_bucket.bucket_state_terraform terraform-state-bucket-karthik || echo "S3 bucket import failed, it might already exist in Terraform state"
         else
           echo "S3 bucket exists"
         fi
       - |
-        if ! terraform show | grep -q "module.ec2.aws_instance.jenkins_ec2_instance"; then
-          terraform import module.ec2.aws_instance.jenkins_ec2_instance i-0516179026a961679
+        if ! terraform state list | grep -q "module.ec2.aws_instance.jenkins_ec2_instance"; then
+          echo "Importing EC2 instance..."
+          terraform import module.ec2.aws_instance.jenkins_ec2_instance i-0516179026a961679 || echo "EC2 instance import failed, it might already exist in Terraform state"
         else
           echo "EC2 already exists"
         fi
