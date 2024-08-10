@@ -9,6 +9,7 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - ${TF_ROOT}/.terraform
+    - ${TF_ROOT}/.terraform.lock.hcl
 
 before_script:
   - apt-get update && apt-get install -y wget unzip
@@ -28,9 +29,11 @@ stages:
 init:
     stage: init
     script:
-        - rm -rf .terraform
-        - rm -f .terraform.lock.hcl
-        - terraform init -reconfigure -upgrade
+        - terraform init
+    artifacts:
+        paths:
+        - ${TF_ROOT}/.terraform
+        - ${TF_ROOT}/.terraform.lock.hcl
 
 validate:
     stage: validate
