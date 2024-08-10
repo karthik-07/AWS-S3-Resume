@@ -1,18 +1,16 @@
-image:
-  name: hashicorp/terraform:light
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_STATE_NAME: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
-  SOPS_VERSION: "3.7.3"
 
 cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - ${TF_ROOT}/.terraform
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ${TF_ROOT}/.terraform
+
+before_script:
+  - cd ${TF_ROOT}
+  - terraform --version
+  - terraform init
 
 stages:
   - validate
@@ -20,22 +18,22 @@ stages:
   - apply
 
 validate:
-    stage: validate
-    script:
-        - terraform validate
+  stage: validate
+  script:
+    - terraform validate
 
 plan:
-    stage: plan
-    script:
-        - terraform plan -out=tfplan
-    artifacts:
-        paths:
-          - -tfplan
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
 
 apply:
-    stage: apply
-    script:
-        - terraform apply -auto-approve tfplan 
-    when: manual
-    only: 
-        - main
+  stage: apply
+  script:
+    - terraform apply -auto-approve tfplan
+  when: manual
+  only:
+    - main  # or your default branch
