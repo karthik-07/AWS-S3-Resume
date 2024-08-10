@@ -50,7 +50,7 @@ apply:
 destroy:
     stage: destroy
     script:
-        - terraform destroy -auto-approve tfplan
+        - terraform destroy -auto-approve
     when: manual
     only:
         - main
