@@ -28,7 +28,7 @@ stages:
 init:
     stage: init
     script:
-        - terraform init
+        - terraform init -reconfigure
 
 validate:
     stage: validate
