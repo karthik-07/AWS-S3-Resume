@@ -16,7 +16,7 @@ cache:
 
 before_script:
     - apk update
-    - apk upgrad libcurl
+    - apk upgrade libcurl
     - apk add --no-cache curl gnupg
     - cd ${TF_ROOT}
     - terraform --version
