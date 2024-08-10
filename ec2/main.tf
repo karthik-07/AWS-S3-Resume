@@ -8,6 +8,9 @@ resource "aws_instance" "jenkins_ec2_instance" {
   tags = {
     Name = var.tag_name
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 
   metadata_options {
     http_endpoint = "enabled"

@@ -42,14 +42,6 @@ import:
           echo "S3 bucket exists"
         fi
       - |
-        if ! terraform state list | grep -q "module.ec2.aws_instance.jenkins_ec2_instance"; then
-          echo "Importing EC2 instance..."
-          terraform import module.ec2.aws_instance.jenkins_ec2_instance i-0516179026a961679 || echo "EC2 instance import failed, it might already exist in Terraform state"
-        else
-          echo "EC2 already exists"
-        fi
-        fi
-      - |
         if ! terraform show | grep -q "module.ec2.aws_key_pair.ec2_instance_public_key"; then
           terraform import module.ec2.aws_key_pair.ec2_instance_public_key aws_ec2_terraform
         else
