@@ -19,11 +19,16 @@ before_script:
   - cd ${TF_ROOT}
 
 stages:
+  - init
   - validate
   - plan
   - apply
   - destroy
 
+init:
+    stage: init
+    script:
+        - terraform init
 
 validate:
     stage: validate
