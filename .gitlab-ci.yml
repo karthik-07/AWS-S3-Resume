@@ -13,7 +13,20 @@ cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - ${TF_ROOT}/.terraform
-      
+
+before_script:
+    - apk add --no-cache curl gnupg
+    - cd ${TF_ROOT}
+    - terraform --version
+    - terraform init
+    - curl -fsSL https://github.com/mozilla/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux -o sops
+    - chmod +x sops
+    - mv sops /usr/local/bin/
+    - echo "${SOPS_GPG_KEY}" | gpg --import
+    - cd ${TF_ROOT}
+    - sops -d terraform.tfvars.enc > terraform.tfvars
+    - terraform init
+
 stages:
   - validate
   - plan
