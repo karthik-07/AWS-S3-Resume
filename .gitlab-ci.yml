@@ -22,7 +22,6 @@ before_script:
 
 stages:
   - validate
-  - import
   - plan
   - apply
 
@@ -30,24 +29,6 @@ validate:
     stage: validate
     script:
         - terraform validate
-
-import:
-    stage: import
-    script:
-      - |
-        if ! terraform state list | grep -q "module.s3_bucket.aws_s3_bucket.bucket_state_terraform"; then
-          echo "Importing S3 bucket..."
-          terraform import module.s3_bucket.aws_s3_bucket.bucket_state_terraform terraform-state-bucket-karthik || echo "S3 bucket import failed, it might already exist in Terraform state"
-        else
-          echo "S3 bucket exists"
-        fi
-      - |
-        if ! terraform show | grep -q "module.ec2.aws_key_pair.ec2_instance_public_key"; then
-          terraform import module.ec2.aws_key_pair.ec2_instance_public_key aws_ec2_terraform
-        else
-          echo "Key pair already exists"
-        fi
-    allow_failure: true
 
 plan:
     stage: plan
