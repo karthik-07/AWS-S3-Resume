@@ -27,7 +27,7 @@ stages:
 init:
   stage: init
   script:
-    - terraform init
+    - terraform init -upgrade
 
 validate:
   stage: validate
