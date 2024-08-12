@@ -29,7 +29,7 @@ init:
   script:
     - rm -rf .terraform
     - rm -f .terraform.lock.hcl
-    - terraform init
+    - terraform init -upgrade
 
 validate:
   stage: validate
