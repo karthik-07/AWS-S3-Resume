@@ -26,12 +26,6 @@ stages:
   - apply
   - destroy
 
-# backend-init:
-#     stage: backend-init
-#     script:
-#       - terraform init
-#     when: manual
-
 init:
     stage: init
     script:
@@ -49,6 +43,7 @@ validate:
 plan:
     stage: plan
     script:
+        - terraform plan -refresh-only -out=tfplan
         - terraform plan -out=tfplan
     artifacts:
         paths:
@@ -65,6 +60,7 @@ apply:
 destroy:
     stage: destroy
     script:
+        - terraform init  # Ensure the backend is initialized
         - terraform destroy -auto-approve
     when: manual
     only:
