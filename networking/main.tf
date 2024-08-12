@@ -5,6 +5,10 @@ resource "aws_vpc" "project_vpc_us" {
   tags = {
     Name = var.vpc_name
   }
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [ cidr_block, tags ]
+  }
 }
 
 resource "aws_subnet" "project_vpc_subnet_public" {

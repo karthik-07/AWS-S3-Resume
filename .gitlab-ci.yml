@@ -9,7 +9,6 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - ${TF_ROOT}/.terraform
-    - ${TF_ROOT}/.terraform.lock.hcl
 
 before_script:
   - apt-get update && apt-get install -y wget unzip
@@ -24,44 +23,30 @@ stages:
   - validate
   - plan
   - apply
-  - destroy
 
 init:
-    stage: init
-    script:
-        - terraform init -reconfigure
-    artifacts:
-        paths:
-        - ${TF_ROOT}/.terraform
-        - ${TF_ROOT}/.terraform.lock.hcl
+  stage: init
+  script:
+    - terraform init
 
 validate:
-    stage: validate
-    script:
-        - terraform validate
+  stage: validate
+  script:
+    - terraform validate
 
 plan:
-    stage: plan
-    script:
-        - terraform plan -refresh-only -out=tfplan
-        - terraform plan -out=tfplan
-    artifacts:
-        paths:
-          - tfplan
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
 
 apply:
-    stage: apply
-    script:
-        - terraform apply -auto-approve tfplan 
-    when: manual
-    only: 
-        - main
-
-destroy:
-    stage: destroy
-    script:
-        - terraform init  # Ensure the backend is initialized
-        - terraform destroy -auto-approve
-    when: manual
-    only:
-        - main
+  stage: apply
+  script:
+    - terraform show tfplan
+    - terraform apply -auto-approve tfplan 
+  when: manual
+  only: 
+    - main
