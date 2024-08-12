@@ -17,6 +17,7 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
+  - terraform init -upgrade
 
 stages:
   - init-upgrade-reconfigure
