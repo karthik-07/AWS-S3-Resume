@@ -17,9 +17,6 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
-  - rm -rf .terraform
-  - rm -f .terraform.lock.hcl
-  - terraform init -reconfigure -backend-config="bucket=${TF_STATE_S3_BUCKET}" -backend-config="key=${TF_STATE_NAME}" -backend-config="region=${AWS_DEFAULT_REGION}"
 
 stages:
   - init
@@ -30,7 +27,7 @@ stages:
 init:
   stage: init
   script:
-    - terraform init
+    - terraform init -reconfigure
 
 validate:
   stage: validate
