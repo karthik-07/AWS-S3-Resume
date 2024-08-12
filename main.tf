@@ -19,7 +19,7 @@ module "ec2" {
   tag_name                 = "Testing-env"
   instance_type            = "t2.micro"
   public_key               = var.public_key
-  subnet_id                = module.networking.project_vpc_subnet_public_subnets_count > 0 ? module.networking.project_vpc_subnet_public_subnets[0] : null
+  subnet_id                = length(module.networking.project_vpc_subnet_public_subnets) > 0 ? module.networking.project_vpc_subnet_public_subnets[0] : null
   sg_for_jenkins           = [module.security_group.sg_ec2_http_id]
   enable_public_ip_address = true
 }
