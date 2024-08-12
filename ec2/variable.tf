@@ -11,7 +11,6 @@ variable "instance_type" {
 variable "subnet_id" {
   description = "The VPC Subnet ID to launch in"
   type        = string
-  default     = null
 }
 
 variable "sg_for_jenkins" {
