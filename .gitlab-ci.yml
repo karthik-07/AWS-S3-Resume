@@ -30,6 +30,7 @@ init:
     - rm -rf .terraform
     - rm -f .terraform.lock.hcl
     - terraform init -upgrade
+    - terraform providers lock -platform=linux_amd64
 
 validate:
   stage: validate
