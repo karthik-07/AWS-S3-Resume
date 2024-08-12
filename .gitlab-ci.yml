@@ -29,11 +29,12 @@ stages:
 init:
   stage: init
   script:
-    - terraform init -reconfigure -backend-config="bucket=${TF_STATE_S3_BUCKET}" -backend-config="key=${TF_STATE_NAME}" -backend-config="region=${AWS_DEFAULT_REGION}"
+    - terraform init
 
 validate:
   stage: validate
   script:
+    - terraform init -reconfigure -backend-config="bucket=${TF_STATE_S3_BUCKET}" -backend-config="key=${TF_STATE_NAME}" -backend-config="region=${AWS_DEFAULT_REGION}"
     - terraform validate
 
 plan:
