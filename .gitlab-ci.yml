@@ -34,7 +34,6 @@ init:
 validate:
   stage: validate
   script:
-    - terraform init -upgrade
     - terraform validate
 
 plan:
