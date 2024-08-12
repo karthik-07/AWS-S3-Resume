@@ -29,7 +29,7 @@ stages:
 init:
     stage: init
     script:
-        - terraform init
+        - terraform init -reconfigure
     artifacts:
         paths:
         - ${TF_ROOT}/.terraform
