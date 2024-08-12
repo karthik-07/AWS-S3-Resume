@@ -27,11 +27,12 @@ stages:
 init:
   stage: init
   script:
-    - terraform init -reconfigure
+    - terraform init -reconfigure -upgrade
 
 validate:
   stage: validate
   script:
+    - terraform init -reconfigure
     - terraform validate
 
 plan:
