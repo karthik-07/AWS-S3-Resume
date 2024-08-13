@@ -7,7 +7,7 @@ resource "aws_vpc" "project_vpc_us" {
   }
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [ cidr_block, tags ]
+    ignore_changes  = [cidr_block, tags]
   }
 }
 

@@ -1,19 +1,19 @@
 resource "aws_s3_bucket" "bucket_state_terraform" {
-    bucket = var.bucket_name
+  bucket = var.bucket_name
 
-    tags = {
-        Name = var.tag_name_s3
-    }
-    lifecycle {
-      prevent_destroy = true
-      ignore_changes = [ bucket ]
-    }
+  tags = {
+    Name = var.tag_name_s3
+  }
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = [bucket]
+  }
 }
 
 resource "aws_s3_bucket_versioning" "bucket_terraform_versioning" {
-    bucket = aws_s3_bucket.bucket_state_terraform.id
-    versioning_configuration {
-      status = "Enabled"
-    }
+  bucket = aws_s3_bucket.bucket_state_terraform.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
