@@ -25,6 +25,7 @@ stages:
   - validate
   - plan
   - apply
+  - destroy
 
 init-upgrade-reconfigure:
     stage: init-upgrade-reconfigure
