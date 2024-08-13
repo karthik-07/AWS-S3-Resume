@@ -17,6 +17,7 @@ before_script:
   - mv terraform /usr/local/bin/
   - terraform version
   - cd ${TF_ROOT}
+  - terraform import module.ec2.aws_instance.jenkins_ec2_instance i-0dcbf8c76bcf598d5
   - terraform init -upgrade
 
 stages:
