@@ -29,3 +29,7 @@ module "s3_bucket" {
   bucket_name = "terraform-state-bucket-karthik"
   tag_name_s3 = "terraform-state-bucket-karthik"
 }
+module "s3_static_bucket" {
+  source = "./static-s3"
+  static_bucket_name = "static-file-bucket-karthik"
+}
