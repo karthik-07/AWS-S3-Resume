@@ -10,7 +10,6 @@ resource "aws_instance" "jenkins_ec2_instance" {
   }
 
   lifecycle {
-    prevent_destroy = true
     ignore_changes  = [ami, tags, associate_public_ip_address]
   }
 
