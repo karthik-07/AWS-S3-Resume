@@ -26,6 +26,7 @@ resource "aws_key_pair" "ec2_instance_public_key" {
   public_key = var.public_key
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [ ami, instance_type ]
   }
 }
 
