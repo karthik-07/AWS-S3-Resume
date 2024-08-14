@@ -41,3 +41,8 @@ module "lb_instance" {
   vpc_id = module.networking.project_vpc_us_id
   ec2_instance_id = module.ec2.ec2_instance_id
 }
+
+output "load_balancer_dns" {
+  description = "The DNS name of the load balancer"
+  value = module.lb_instance.lb_dns_name
+}
