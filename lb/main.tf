@@ -25,7 +25,7 @@ resource "aws_lb_target_group" "s3_tg" {
     vpc_id = var.vpc_id
 
     health_check {
-      path = "./index.html"
+      path = "/index.html"
       healthy_threshold = 2
       unhealthy_threshold = 10
       timeout = 5
