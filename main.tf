@@ -33,3 +33,9 @@ module "s3_static_bucket" {
   source             = "./static-s3"
   static_bucket_name = "static-file-bucket-karthik"
 }
+
+module "lb_instance" {
+  source = "./lb"
+  sg_for_lb = [module.security_group.sg_ec2_http_id]
+  subnet_ids = tolist(module.networking.project_vpc_subnet_public_subnets)[0]  
+}
