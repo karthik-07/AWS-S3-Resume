@@ -5,3 +5,67 @@ resource "aws_lb" "balancer_instance" {
     security_groups = var.sg_for_lb
     subnets = var.subnet_ids
 }
+
+resource "aws_lb_listener" "front_end" {
+    load_balancer_arn = aws_lb.balancer_instance.arn
+    port = "80"
+    protocol = "http"
+
+    default_action {
+      type = "forward"
+      target_group_arn = aws_lb_target_group.s3_tg.arn
+    }
+}
+
+resource "aws_lb_target_group" "s3_tg" {
+    name = "s3-resume-tg"
+    port = 80
+    protocol = "HTTP"
+    target_type = "ip"
+    vpc_id = var.vpc_id
+
+    health_check {
+      path = "./index.html"
+      healthy_threshold = 2
+      unhealthy_threshold = 10
+      timeout = 5
+      interval = 30
+      matcher = "200"
+    } 
+}
+
+resource "aws_lb_target_group_attachment" "s3_tg_attachment" {
+    target_group_arn = aws_lb_target_group.s3_tg.arn
+    target_id = "http://static-file-bucket-karthik.s3-website-us-east-1.amazonaws.com"
+    port = 80  
+}
+
+resource "aws_lb_target_group" "ec2_tg" {
+    name = "ec2-resume-tag"
+    port = 80
+    protocol = "HTTP"
+    vpc_id = var.vpc_id  
+}
+
+resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
+    target_group_arn = aws_lb_target_group.ec2_tg.arn
+    target_id = var.ec2_instance_id
+    port = 80  
+}
+
+resource "aws_lb_listener_rule" "s3_to_ec2_failover" {
+    listener_arn = aws_lb_listener.front_end.arn
+    priority = 100
+
+    action {
+      type = "forward"
+      target_group_arn = aws_lb_target_group.ec2_tg.arn
+    }
+
+    condition {
+      path_pattern {
+        values = ["/"]
+      }
+    }
+}
+

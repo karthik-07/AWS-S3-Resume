@@ -38,4 +38,6 @@ module "lb_instance" {
   source = "./lb"
   sg_for_lb = [module.security_group.sg_ec2_http_id]
   subnet_ids = module.networking.project_vpc_subnet_public_subnets
+  vpc_id = module.networking.project_vpc_us_id
+  ec2_instance_id = module.ec2.ec2_instance_id
 }
