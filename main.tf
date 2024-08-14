@@ -37,5 +37,5 @@ module "s3_static_bucket" {
 module "lb_instance" {
   source = "./lb"
   sg_for_lb = [module.security_group.sg_ec2_http_id]
-  subnet_ids = tolist(module.networking.project_vpc_subnet_public_subnets)[0]  
+  subnet_ids = module.networking.project_vpc_subnet_public_subnets
 }
