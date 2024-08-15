@@ -42,6 +42,45 @@ resource "aws_lb_listener_rule" "s3_primary" {
   }
 }
 
+resource "aws_lb_listener_rule" "cache_resources" {
+  listener_arn = aws_lb_listener.front_end.arn
+  priority = 1
+  action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Cached Response"
+      status_code = "200"
+    }
+  }
+  condition {
+    path_pattern {
+      values = ["/", "/index.html"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "cache_static" {
+  listener_arn = aws_lb_listener.front_end.arn
+  priority = 2
+
+  action {
+    type = "redirect"
+    redirect {
+      host = var.s3_website_endpoint
+      port = "80"
+      protocol = "HTTP"
+      status_code = "HTTP_302"
+    }
+  }
+  condition {
+    path_pattern {
+      values = ["/*.css", "/*.js", "/*.jpg", "/*.png", "/*.gif"]
+    }
+  }
+  
+}
+
 
 
 
