@@ -42,10 +42,6 @@ resource "aws_lb_listener_rule" "s3_primary" {
   }
 }
 
-output "lb_dns_name" {
-  description = "The DNS name for load balancer"
-  value = aws_lb.balancer_instance.dns_name
-}
 
 
 
