@@ -46,11 +46,11 @@ resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
 #     vpc_id = var.vpc_id  
 # }
 
-resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
-    target_group_arn = aws_lb_target_group.ec2_tg.arn
-    target_id = var.ec2_instance_id
-    port = 80  
-}
+# resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
+#     target_group_arn = aws_lb_target_group.ec2_tg.arn
+#     target_id = var.ec2_instance_id
+#     port = 80  
+# }
 
 resource "aws_lb_listener_rule" "s3_to_ec2_failover" {
     listener_arn = aws_lb_listener.front_end.arn
