@@ -7,69 +7,46 @@ resource "aws_lb" "balancer_instance" {
 }
 
 resource "aws_lb_listener" "front_end" {
-    load_balancer_arn = aws_lb.balancer_instance.arn
-    port = "80"
-    protocol = "HTTP"
+  load_balancer_arn = aws_lb.balancer_instance.arn
+  port = "80"
+  protocol = "HTTP"
 
-    default_action {
-      type = "forward"
-      target_group_arn = aws_lb_target_group.ec2_tg.arn
+  default_action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Service Unavilabe"
+      status_code = "503"
     }
+  }
 }
 
-resource "aws_lb_target_group" "ec2_tg" {
-    name = "ec2-resume-tg"
-    port = 80
-    protocol = "HTTP"
-    vpc_id = var.vpc_id
+resource "aws_lb_listener_rule" "s3_primary" {
+  listener_arn = aws_lb_listener.front_end.arn
+  priority = 1
 
-    health_check {
-      path = "/index.html"
-      healthy_threshold = 2
-      unhealthy_threshold = 10
-      timeout = 5
-      interval = 30
-      matcher = "200"
-    } 
-}
-
-resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
-    target_group_arn = aws_lb_target_group.ec2_tg.arn
-    target_id = var.ec2_instance_id
-    port = 80  
-}
-
-# resource "aws_lb_target_group" "ec2_tg" {
-#     name = "ec2-resume-tag"
-#     port = 80
-#     protocol = "HTTP"
-#     vpc_id = var.vpc_id  
-# }
-
-# resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
-#     target_group_arn = aws_lb_target_group.ec2_tg.arn
-#     target_id = var.ec2_instance_id
-#     port = 80  
-# }
-
-resource "aws_lb_listener_rule" "s3_to_ec2_failover" {
-    listener_arn = aws_lb_listener.front_end.arn
-    priority = 100
-
-    action {
-      type = "forward"
-      redirect {
-        host = var.s3_website_endpoint
-        port = "80"
-        protocol = "HTTP"
-        status_code = "HTTP_302"
-      }
+  action {
+    type = "redirect"
+    redirect {
+      host = var.s3_website_endpoint
+      port = "80"
+      protocol = "HTTP"
+      status_code = "HTTP_302"
     }
+  }
 
-    condition {
-      path_pattern {
-        values = ["/"]
-      }
+  condition {
+    path_pattern {
+      values = ["/*"]
     }
+  }
 }
+
+output "lb_dns_name" {
+  description = "The DNS name for load balancer"
+  value = aws_lb.balancer_instance.dns_name
+}
+
+
+
 
