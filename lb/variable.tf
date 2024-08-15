@@ -14,3 +14,7 @@ variable "vpc_id" {
 variable "ec2_instance_id" {
   
 }
+
+variable "s3_website_endpoint" {
+  
+}
