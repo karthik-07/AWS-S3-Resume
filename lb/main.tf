@@ -39,12 +39,12 @@ resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
     port = 80  
 }
 
-resource "aws_lb_target_group" "ec2_tg" {
-    name = "ec2-resume-tag"
-    port = 80
-    protocol = "HTTP"
-    vpc_id = var.vpc_id  
-}
+# resource "aws_lb_target_group" "ec2_tg" {
+#     name = "ec2-resume-tag"
+#     port = 80
+#     protocol = "HTTP"
+#     vpc_id = var.vpc_id  
+# }
 
 resource "aws_lb_target_group_attachment" "ec2_tg_attachment" {
     target_group_arn = aws_lb_target_group.ec2_tg.arn
