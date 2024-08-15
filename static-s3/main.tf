@@ -33,7 +33,7 @@ resource "aws_s3_bucket_policy" "resume_bucket_policy" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.resume_bucket.arn}/*"
+        Resource  = "${aws_s3_bucket.static-file-store-karthik.arn}/*"
       },
     ]
   })

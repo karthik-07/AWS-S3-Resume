@@ -32,6 +32,7 @@ module "s3_bucket" {
 module "s3_static_bucket" {
   source             = "./static-s3"
   static_bucket_name = "static-file-bucket-karthik"
+  
 }
 
 module "lb_instance" {
