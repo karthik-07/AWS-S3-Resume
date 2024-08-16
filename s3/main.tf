@@ -4,10 +4,6 @@ resource "aws_s3_bucket" "bucket_state_terraform" {
   tags = {
     Name = var.tag_name_s3
   }
-  lifecycle {
-    prevent_destroy = true
-    ignore_changes  = [bucket]
-  }
 }
 
 resource "aws_s3_bucket_versioning" "bucket_terraform_versioning" {

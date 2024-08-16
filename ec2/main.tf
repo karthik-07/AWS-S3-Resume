@@ -23,8 +23,5 @@ resource "aws_instance" "jenkins_ec2_instance" {
 resource "aws_key_pair" "ec2_instance_public_key" {
   key_name   = "aws_ec2_terraform"
   public_key = var.public_key
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
