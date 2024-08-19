@@ -24,16 +24,16 @@ module "ec2" {
   enable_public_ip_address = true
 }
 
-module "s3_bucket" {
-  source      = "./s3"
-  bucket_name = "terraform-state-bucket-karthik"
-  tag_name_s3 = "terraform-state-bucket-karthik"
-}
-module "s3_static_bucket" {
-  source             = "./static-s3"
-  static_bucket_name = "static-file-bucket-karthik"
+# module "s3_bucket" {
+#   source      = "./s3"
+#   bucket_name = "terraform-state-bucket-karthik"
+#   tag_name_s3 = "terraform-state-bucket-karthik"
+# }
+# module "s3_static_bucket" {
+#   source             = "./static-s3"
+#   static_bucket_name = "static-file-bucket-karthik"
   
-}
+# }
 
 module "lb_instance" {
   source = "./lb"
