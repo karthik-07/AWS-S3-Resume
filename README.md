@@ -19,9 +19,9 @@ This project uses Terraform to set up an AWS infrastructure for hosting a static
 ## Quick Start
 
 1. Clone this repository
-2. Initialize Terraform: terraform init
-3. Review the Terraform plan: terraform plan
-4. Apply the Terraform configuration: terraform apply
+2. Initialize Terraform: `terraform init`
+3. Review the Terraform plan: `terraform plan`
+4. Apply the Terraform configuration: `terraform apply`
 5. After successful application, Terraform will output the ALB DNS name. Use this to access your resume website.
 
 ## Project Structure
@@ -40,7 +40,7 @@ To customize this project for your own use:
 
 ## Cleaning Up
 
-To destroy the created resources: terraform destroy
+To destroy the created resources: `terraform destroy`
 ## Security Considerations
 
 - Ensure your AWS credentials are kept secure and not committed to the repository
